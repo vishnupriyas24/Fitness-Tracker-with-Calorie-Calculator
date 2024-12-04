@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Tracker with Calorie Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ff7eb3, #ff758c, #fc6e51, #ffdd59, #55efc4);
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin: 20px 0;
+        }
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+        select, input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background-color: #1f8c4e;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+        .output {
+            max-width: 400px;
+            margin: 20px auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .output p {
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+        .total-calories {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fitness Tracker</h1>
+    <form id="activity-form">
+        <label for="activity">Select Activity:</label>
+        <select id="activity" required>
+            <option value="running">Running (10 calories/min)</option>
+            <option value="cycling">Cycling (8 calories/min)</option>
+            <option value="swimming">Swimming (12 calories/min)</option>
+            <option value="walking">Walking (5 calories/min)</option>
+            <option value="yoga">Yoga (4 calories/min)</option>
+            <option value="jumpingRope">Jumping Rope (15 calories/min)</option>
+            <option value="dancing">Dancing (7 calories/min)</option>
+            <option value="weightLifting">Weight Lifting (6 calories/min)</option>
+            <option value="basketball">Playing Basketball (10 calories/min)</option>
+            <option value="hiking">Hiking (9 calories/min)</option>
+            <option value="skating">Skating (11 calories/min)</option>
+            <option value="martialArts">Martial Arts (13 calories/min)</option>
+            <option value="rowing">Rowing (14 calories/min)</option>
+            <option value="zumba">Zumba (8 calories/min)</option>
+        </select>
+        <label for="duration">Duration (in minutes):</label>
+        <input type="number" id="duration" min="1" required placeholder="Enter duration in minutes" />
+        <button type="submit">Add Activity</button>
+    </form>
+    <div class="output" id="activity-log">
+        <h3>Activity Log</h3>
+        <p>No activities added yet.</p>
+    </div>
+    <div class="output">
+        <p>Total Calories Burned: <span class="total-calories" id="total-calories">0</span></p>
+    </div>
+    <script>
+        const form = document.getElementById('activity-form');
+        const activityLog = document.getElementById('activity-log');
+        const totalCaloriesDisplay = document.getElementById('total-calories');
+        let totalCalories = 0;
+        const calorieRates = {
+            running: 10,
+            cycling: 8,
+            swimming: 12,
+            walking: 5,
+            yoga: 4,
+            jumpingRope: 15,
+            dancing: 7,
+            weightLifting: 6,
+            basketball: 10,
+            hiking: 9,
+            skating: 11,
+            martialArts: 13,
+            rowing: 14,
+            zumba: 8
+        };
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const activity = document.getElementById('activity').value;
+            const duration = parseInt(document.getElementById('duration').value);
+            if (!activity || !duration || duration < 1) {
+                alert('Please provide valid inputs!');
+                return;
+            }
+            const caloriesBurned = calorieRates[activity] * duration;
+            totalCalories += caloriesBurned;
+            const logEntry = document.createElement('p');
+            logEntry.textContent = `${capitalize(activity)}: ${duration} minutes - ${caloriesBurned} calories burned`;
+            activityLog.appendChild(logEntry);
+            totalCaloriesDisplay.textContent = totalCalories;
+            form.reset();
+        });
+        function capitalize(str) {
+            return str.replace(/([A-Z])/g, ' $1')
+                      .replace(/^./, char => char.toUpperCase());
+        }
+    </script>
+</body>
+</html>
